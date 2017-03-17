@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>usermode.qml</file>
+        <file>expertmode.qml</file>
+        <file>forceData.csv</file>
+        <file>Images/padels.png</file>
+        <file>datasource.cpp</file>
+        <file>datasource.h</file>
+        <file>main.cpp</file>
+    </qresource>
+</RCC>
