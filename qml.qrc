@@ -1,12 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>usermode.qml</file>
-        <file>expertmode.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/ControlPanel.qml</file>
+        <file>qml/MultiButton.qml</file>
+        <file>qml/ChartView.qml</file>
         <file>forceData.csv</file>
-        <file>Images/padels.png</file>
-        <file>datasource.cpp</file>
-        <file>datasource.h</file>
-        <file>main.cpp</file>
+        <file>Specimen_RawData_1.csv</file>
+        <file>test.txt</file>
     </qresource>
 </RCC>

@@ -27,35 +27,71 @@
 **
 ****************************************************************************/
 
-#ifndef DATASOURCE_H
-#define DATASOURCE_H
+import QtQuick 2.1
+import QtQuick.Layouts 1.0
 
-#include <QtCore/QObject>
-#include <QtCharts/QAbstractSeries>
-#include <QFile>
+ColumnLayout {
+    spacing: 8
+    Layout.fillHeight: true
+    signal animationsEnabled(bool enabled)
+    signal seriesTypeChanged(string type)
+    signal refreshRateChanged(variant rate);
+    signal signalSourceChanged(string source, int signalCount, int sampleCount);
+    signal antialiasingEnabled(bool enabled)
+    signal openGlChanged(bool enabled)
 
-QT_BEGIN_NAMESPACE
-class QQuickView;
-QT_END_NAMESPACE
+    Text {
+        text: "LigaMentation"
+        font.pointSize: 12
+        color: "light blue"
+    }
 
-QT_CHARTS_USE_NAMESPACE
+    /*
+    MultiButton {
+        id: openGLButton
+        text: "OpenGL: "
+        items: ["false", "true"]
+        currentSelection: 1
 
-class DataSource : public QObject
-{
-    Q_OBJECT
-public:
-    explicit DataSource(QQuickView *appViewer, QObject *parent = 0);
+    }*/
 
-Q_SIGNALS:
+    MultiButton {
+        text: "View: "
+        items: ["live", "file"]
+        currentSelection: 0
 
-public slots:
-    void generateData(int type, int rowCount, int colCount);
-    void update(QAbstractSeries *series);
+    }
 
-private:
-    QQuickView *m_appViewer;
-    QList<QVector<QPointF> > m_data;
-    int m_index;
-};
 
-#endif // DATASOURCE_H
+    MultiButton {
+        id: signalSourceButton
+        text: "Recording: "
+        items: ["on", "off"]
+        currentSelection: 0
+
+    }
+
+    MultiButton {
+        id: sampleCountButton
+        text: "Samples: "
+        items: ["6", "128", "1024", "10000"]
+        currentSelection: 2
+
+    }
+
+    MultiButton {
+        text: "Refresh rate: "
+        items: ["1", "24", "60"]
+        currentSelection: 2
+
+    }
+
+    /*
+    MultiButton {
+        id: antialiasButton
+        text: "Antialias: "
+        items: ["OFF", "ON"]
+        currentSelection: 0
+
+    }*/
+}

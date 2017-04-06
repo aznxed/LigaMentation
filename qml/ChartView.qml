@@ -27,35 +27,57 @@
 **
 ****************************************************************************/
 
-#ifndef DATASOURCE_H
-#define DATASOURCE_H
+import QtQuick 2.0
+import QtCharts 2.1
 
-#include <QtCore/QObject>
-#include <QtCharts/QAbstractSeries>
-#include <QFile>
+//![1]
+ChartView {
+    id: chartView
+    animationOptions: ChartView.NoAnimation
+    theme: ChartView.ChartThemeDark
 
-QT_BEGIN_NAMESPACE
-class QQuickView;
-QT_END_NAMESPACE
+    ValueAxis {
+        id: axisY1
+        min: 0
+        max: 4
+        titleText: "Force(lbs)"
+    }
 
-QT_CHARTS_USE_NAMESPACE
+    ValueAxis {
+        id: axisX
+        min: 0
+        max: 20
+        //titleText: "Angle"
+    }
 
-class DataSource : public QObject
-{
-    Q_OBJECT
-public:
-    explicit DataSource(QQuickView *appViewer, QObject *parent = 0);
+    LineSeries {
+        id: lineSeries1
+        name: "Left"
+        axisX: axisX
+        axisY: axisY1
 
-Q_SIGNALS:
+    }
 
-public slots:
-    void generateData(int type, int rowCount, int colCount);
-    void update(QAbstractSeries *series);
+    LineSeries {
+        id: lineSeries2
+        name: "Right"
+        axisX: axisX
+        axisY: axisY1
 
-private:
-    QQuickView *m_appViewer;
-    QList<QVector<QPointF> > m_data;
-    int m_index;
-};
+    }
 
-#endif // DATASOURCE_H
+    Timer {
+            id: refreshTimer
+            interval: 1 / 60 * 1000 // 60 Hz
+            running: true
+            repeat: false
+            onTriggered: {
+                dataSource.generateData(0, 1, 4000);
+                dataSource.update(chartView.series(0));
+                dataSource.generateData(1, 1, 4000);
+                dataSource.update(chartView.series(1));
+           }
+
+    }
+
+}

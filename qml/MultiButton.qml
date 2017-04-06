@@ -27,35 +27,43 @@
 **
 ****************************************************************************/
 
-#ifndef DATASOURCE_H
-#define DATASOURCE_H
+import QtQuick 2.0
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
-#include <QtCore/QObject>
-#include <QtCharts/QAbstractSeries>
-#include <QFile>
+Item {
+    id: button
 
-QT_BEGIN_NAMESPACE
-class QQuickView;
-QT_END_NAMESPACE
+    property string text: "Option: "
+    property variant items: ["first"]
+    property int currentSelection: 0
+    signal selectionChanged(variant selection)
 
-QT_CHARTS_USE_NAMESPACE
+    signal clicked
 
-class DataSource : public QObject
-{
-    Q_OBJECT
-public:
-    explicit DataSource(QQuickView *appViewer, QObject *parent = 0);
+    implicitWidth: buttonText.implicitWidth + 5
+    implicitHeight: buttonText.implicitHeight + 10
 
-Q_SIGNALS:
+    Button {
+        id: buttonText
+        width: parent.width
+        height: parent.height
 
-public slots:
-    void generateData(int type, int rowCount, int colCount);
-    void update(QAbstractSeries *series);
-
-private:
-    QQuickView *m_appViewer;
-    QList<QVector<QPointF> > m_data;
-    int m_index;
-};
-
-#endif // DATASOURCE_H
+        style: ButtonStyle {
+            label: Component {
+                Text {
+                    text: button.text + button.items[currentSelection]
+                    clip: true
+                    wrapMode: Text.WordWrap
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
+        }
+        onClicked: {
+            currentSelection = (currentSelection + 1) % items.length;
+            selectionChanged(button.items[currentSelection]);
+        }
+    }
+}

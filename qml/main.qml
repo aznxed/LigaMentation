@@ -27,35 +27,44 @@
 **
 ****************************************************************************/
 
-#ifndef DATASOURCE_H
-#define DATASOURCE_H
+import QtQuick 2.0
 
-#include <QtCore/QObject>
-#include <QtCharts/QAbstractSeries>
-#include <QFile>
+//![1]
+Item {
+    id: main
+    width: 1200
+    height: 800
+    /*
+    Rectangle {
+        id: logo
+        width:1200
+        height: 200
+        anchors.horizontalCenterOffset: 0
+        anchors.top: parent.top
+        //source: "Images/LigaMentationLogo.png"
+        anchors.centerIn: parent.center
+    }*/
 
-QT_BEGIN_NAMESPACE
-class QQuickView;
-QT_END_NAMESPACE
+    ControlPanel{
+        id: controlPanel
+        //anchors.top: logo.bottom
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+    }
 
-QT_CHARTS_USE_NAMESPACE
+    ChartView {
+            id: scopeView
+            //anchors.top: logo.bottom
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.left: controlPanel.right
+            height: main.height
+    }
 
-class DataSource : public QObject
-{
-    Q_OBJECT
-public:
-    explicit DataSource(QQuickView *appViewer, QObject *parent = 0);
 
-Q_SIGNALS:
 
-public slots:
-    void generateData(int type, int rowCount, int colCount);
-    void update(QAbstractSeries *series);
-
-private:
-    QQuickView *m_appViewer;
-    QList<QVector<QPointF> > m_data;
-    int m_index;
-};
-
-#endif // DATASOURCE_H
+}

@@ -1,62 +1,30 @@
-import QtQuick 2.5
+import QtQuick 2.6
+import QtQuick.Window 2.2
 
 Item {
-    width: 1200
-    height: 800
-    property bool sourceLoaded: false
+    visible: true
+    width: 640
+    height: 480
 
-    ListView {
-        id: root
-        focus: true
+    MouseArea {
         anchors.fill: parent
-        snapMode: ListView.SnapOneItem
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveDuration: 30
-        orientation: ListView.Horizontal
-        boundsBehavior: Flickable.StopAtBounds
-
-        model: ListModel {
-            ListElement {component: "usermode.qml"}
-            ListElement {component: "expertmode.qml"}
-
-        }
-
-        onCurrentIndexChanged: {
-            if (infoText.opacity > 0.0) {
-                if (sourceLoaded)
-                    infoText.opacity = 0.0;
-                else if (currentIndex != 0)
-                    currentIndex = 0;
-            }
-        }
-
-        delegate: Loader {
-            width: root.width
-            height: root.height
-
-            source: component
-            asynchronous: true
-
-            onLoaded: sourceLoaded = true
+        onClicked: {
+            console.log(qsTr('Clicked on background. Text: "' + textEdit.text + '"'))
         }
     }
 
-    Rectangle {
-        id: infoText
-        anchors.centerIn: parent
-        width: parent.width
-        height: 40
-        color: "black"
-        Text {
-            color: "white"
-            anchors.centerIn: parent
-            text: "You can navigate between views using swipe or arrow keys"
-        }
-
-        Behavior on opacity {
-            NumberAnimation { duration: 20 }
+    TextEdit {
+        id: textEdit
+        text: qsTr("Enter some text...")
+        verticalAlignment: Text.AlignVCenter
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: 20
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: -10
+            color: "transparent"
+            border.width: 1
         }
     }
-
 }
-
